@@ -4,7 +4,7 @@ import {
   readSchedulerServiceTaskScheduleDefinitionFromConfig,
 } from '@backstage/backend-plugin-api';
 import { searchIndexRegistryExtensionPoint } from '@backstage/plugin-search-backend-node/alpha';
-import { GithubQuestionsCollatorFactory } from '../collators';
+import { GithubFilesCollatorFactory } from '../collators';
 
 /**
  * @public
@@ -41,7 +41,7 @@ export const searchGithubCollatorModule = createBackendModule({
 
         indexRegistry.addCollator({
           schedule: scheduler.createScheduledTaskRunner(schedule),
-          factory: GithubQuestionsCollatorFactory.fromConfig(githubConfig, {
+          factory: GithubFilesCollatorFactory.fromConfig(githubConfig, {
             logger,
           }),
         });

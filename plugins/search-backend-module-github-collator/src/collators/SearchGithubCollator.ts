@@ -10,6 +10,7 @@ type GithubFile = {
   name: string;
   path: string;
   url: string;
+  html_url: string;
 };
 
 type GithubRepo = {
@@ -17,7 +18,7 @@ type GithubRepo = {
   repo: string;
 };
 
-interface GithubDocument extends IndexableDocument {
+export interface GithubDocument extends IndexableDocument {
   path: string;
   repository: string;
 }
@@ -132,7 +133,7 @@ export class GithubFilesCollatorFactory implements DocumentCollatorFactory {
 
           yield {
             title: file.name,
-            location: file.url,
+            location: file.html_url,
             text: fileContent,
             path: file.path,
             repository: `${source.owner}/${source.repo}`,

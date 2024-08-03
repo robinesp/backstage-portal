@@ -20,10 +20,12 @@ import {
   CatalogIcon,
   Content,
   DocsIcon,
+  GitHubIcon,
   Header,
   Page,
 } from '@backstage/core-components';
 import { useApi } from '@backstage/core-plugin-api';
+import { GithubSearchResultListItem } from '@internal/backstage-plugin-github-search-result-item';
 
 const useStyles = makeStyles((theme: Theme) => ({
   bar: {
@@ -60,6 +62,11 @@ const SearchPage = () => {
               name="Result Type"
               defaultValue="software-catalog"
               types={[
+                {
+                  value: 'github',
+                  name: 'Github Docs',
+                  icon: <GitHubIcon />,
+                },
                 {
                   value: 'software-catalog',
                   name: 'Software Catalog',
@@ -111,6 +118,7 @@ const SearchPage = () => {
           <Grid item xs={9}>
             <SearchPagination />
             <SearchResult>
+              <GithubSearchResultListItem icon={<GitHubIcon />} lineClamp={6} />
               <CatalogSearchResultListItem icon={<CatalogIcon />} />
               <TechDocsSearchResultListItem icon={<DocsIcon />} />
             </SearchResult>

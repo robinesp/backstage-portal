@@ -1,0 +1,1 @@
+export { GithubSearchResultListItem } from './plugin';
