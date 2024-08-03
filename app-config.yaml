@@ -33,9 +33,17 @@ backend:
   # workingDirectory: /tmp # Use this to configure a working directory for the scaffolder, defaults to the OS temp-dir
   search:
     github:
+      maxPages: 10
+      schedule:
+        frequency: { minutes: 30 }
+        timeout: { minutes: 3 }
       sources:
         - owner: backstage
           repo: community-plugins
+        - owner: backstage
+          repo: demo
+        - owner: google
+          repo: googletest
 
 integrations:
   github:
@@ -108,6 +116,3 @@ catalog:
     #   target: https://github.com/backstage/backstage/blob/master/packages/catalog-model/examples/acme-corp.yaml
     #   rules:
     #     - allow: [User, Group]
-
-stackoverflow:
-  baseUrl: https://api.stackexchange.com/2.2

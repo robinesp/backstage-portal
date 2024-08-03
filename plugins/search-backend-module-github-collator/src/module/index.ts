@@ -1,0 +1,1 @@
+export { searchGithubCollatorModule } from './SearchGithubCollatorModule';
