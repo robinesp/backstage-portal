@@ -61,15 +61,19 @@ export class GithubFilesCollatorFactory implements DocumentCollatorFactory {
     config: Config,
     options: GithubQuestionsCollatorFactoryOptions,
   ) {
+    if (!config.has('apiToken')) {
+      options.logger.error('Missing required Github API token');
+    }
+
     const sources =
       config.getOptionalConfigArray('sources')?.map(source => ({
         owner: source.getString('owner'),
         repo: source.getString('repo'),
       })) || [];
-    const apiToken = config.getOptionalString('apiToken');
-    const maxPages = config.getOptionalNumber('maxPages') || 100;
     const baseUrl =
       config.getOptionalString('baseUrl') || 'https://api.github.com';
+    const apiToken = config.getOptionalString('apiToken');
+    const maxPages = config.getOptionalNumber('maxPages') || 100;
 
     return new GithubFilesCollatorFactory({
       ...options,
@@ -89,9 +93,13 @@ export class GithubFilesCollatorFactory implements DocumentCollatorFactory {
    *
    */
   async *execute(): AsyncGenerator<GithubDocument> {
-    // If a Github token is provided, use it to authenticate all API requests
-    const headers: HeadersInit = {};
-    if (this.apiToken) headers.Authorization = `token ${this.apiToken}`;
+    if (!this.apiToken) {
+      this.logger.warn(
+        'Github API token is missing - no documents will be indexed',
+      );
+      return;
+    }
+    const headers: HeadersInit = { Authorization: `token ${this.apiToken}` };
 
     for (const source of this.sources!) {
       // Paginate request until end or max pages is reached
@@ -112,9 +120,12 @@ export class GithubFilesCollatorFactory implements DocumentCollatorFactory {
         );
 
         if (res.status === 403) {
-          this.logger.warn(
-            'Github API rate limit exceeded - use authenticated request to get a higher rate limit',
-          );
+          this.logger.warn('Github API rate limit exceeded');
+          return;
+        }
+
+        if (res.status === 401) {
+          this.logger.warn('Github API - unauthorized request');
           return;
         }
 
