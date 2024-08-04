@@ -119,13 +119,10 @@ export class SearchGithubCollatorFactory implements DocumentCollatorFactory {
           { headers },
         );
 
-        if (res.status === 403) {
-          this.logger.warn('Github API rate limit exceeded');
-          return;
-        }
-
-        if (res.status === 401) {
-          this.logger.warn('Github API - unauthorized request');
+        if (res.status !== 200) {
+          this.logger.warn(
+            `Failed to fetch Github documents: ${res.statusText}`,
+          );
           return;
         }
 
