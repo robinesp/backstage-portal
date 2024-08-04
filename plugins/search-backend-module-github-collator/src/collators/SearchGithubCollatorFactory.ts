@@ -6,7 +6,7 @@ import { Config } from '@backstage/config';
 import { Readable } from 'stream';
 import { LoggerService } from '@backstage/backend-plugin-api';
 
-type GithubFile = {
+export type GithubFile = {
   name: string;
   path: string;
   url: string;
@@ -24,7 +24,7 @@ export interface GithubDocument extends IndexableDocument {
 }
 
 /**
- * Options for {@link GithubFilesCollatorFactory}
+ * Options for {@link SearchGithubCollatorFactory}
  *
  * @public
  */
@@ -41,7 +41,7 @@ export type GithubQuestionsCollatorFactoryOptions = {
  *
  * @public
  */
-export class GithubFilesCollatorFactory implements DocumentCollatorFactory {
+export class SearchGithubCollatorFactory implements DocumentCollatorFactory {
   private readonly sources: GithubRepo[] | undefined;
   private readonly baseUrl: string | undefined;
   private readonly apiToken: string | undefined;
@@ -75,12 +75,12 @@ export class GithubFilesCollatorFactory implements DocumentCollatorFactory {
     const apiToken = config.getOptionalString('apiToken');
     const maxPages = config.getOptionalNumber('maxPages') || 100;
 
-    return new GithubFilesCollatorFactory({
-      ...options,
+    return new SearchGithubCollatorFactory({
       baseUrl,
       apiToken,
       maxPages,
       sources,
+      ...options,
     });
   }
 

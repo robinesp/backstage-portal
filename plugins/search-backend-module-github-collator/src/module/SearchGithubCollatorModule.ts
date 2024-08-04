@@ -4,7 +4,7 @@ import {
   readSchedulerServiceTaskScheduleDefinitionFromConfig,
 } from '@backstage/backend-plugin-api';
 import { searchIndexRegistryExtensionPoint } from '@backstage/plugin-search-backend-node/alpha';
-import { GithubFilesCollatorFactory } from '../collators';
+import { SearchGithubCollatorFactory } from '../collators';
 
 /**
  * @public
@@ -14,7 +14,6 @@ export const searchGithubCollatorModule = createBackendModule({
   pluginId: 'search',
   moduleId: 'github-collator',
   register(env) {
-    console.info('Starting Github search');
     env.registerInit({
       deps: {
         config: coreServices.rootConfig,
@@ -41,7 +40,7 @@ export const searchGithubCollatorModule = createBackendModule({
 
         indexRegistry.addCollator({
           schedule: scheduler.createScheduledTaskRunner(schedule),
-          factory: GithubFilesCollatorFactory.fromConfig(githubConfig, {
+          factory: SearchGithubCollatorFactory.fromConfig(githubConfig, {
             logger,
           }),
         });

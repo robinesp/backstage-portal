@@ -1,4 +1,4 @@
 export {
   type GithubQuestionsCollatorFactoryOptions,
-  GithubFilesCollatorFactory,
-} from './SearchGithubCollator';
+  SearchGithubCollatorFactory,
+} from './SearchGithubCollatorFactory';

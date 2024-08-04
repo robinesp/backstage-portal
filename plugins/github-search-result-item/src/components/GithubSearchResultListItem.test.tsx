@@ -1,27 +1,27 @@
-// TODO
-// import React from 'react';
-// import { ExampleComponent } from './ExampleComponent';
-// import { rest } from 'msw';
-// import { setupServer } from 'msw/node';
-// import { screen } from '@testing-library/react';
-// import { registerMswTestHooks, renderInTestApp } from '@backstage/test-utils';
+import React from 'react';
+import { renderInTestApp } from '@backstage/test-utils';
+import { GithubSearchResultListItem } from './GithubSearchResultListItem';
 
-// describe('ExampleComponent', () => {
-//   const server = setupServer();
-//   // Enable sane handlers for network requests
-//   registerMswTestHooks(server);
+const validResult = {
+  location: 'https://github.com/backstage/demo/blob/master/README.md',
+  title: 'README.md',
+  text: 'This repository is the source code for the demo Backstage instance deployed to demo.backstage.io.',
+  kind: 'github',
+  namespace: '',
+  name: 'README.md',
+  lifecycle: 'production',
+  path: '/README.md',
+  repository: 'backstage/demo',
+};
 
-//   // setup mock response
-//   beforeEach(() => {
-//     server.use(
-//       rest.get('/*', (_, res, ctx) => res(ctx.status(200), ctx.json({}))),
-//     );
-//   });
+describe('GithubSearchResultListItem', () => {
+  it('should render github doc passed in', async () => {
+    const { findByText } = await renderInTestApp(
+      <GithubSearchResultListItem result={validResult} />,
+    );
 
-//   it('should render', async () => {
-//     await renderInTestApp(<ExampleComponent />);
-//     expect(
-//       screen.getByText('Welcome to github-search-result-item!'),
-//     ).toBeInTheDocument();
-//   });
-// });
+    expect(await findByText(validResult.title)).toBeInTheDocument();
+
+    expect(await findByText(validResult.text)).toBeInTheDocument();
+  });
+});

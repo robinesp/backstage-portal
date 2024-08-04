@@ -59,6 +59,13 @@ yarn dev
 
 ### Testing
 
+Unit testing suits are implemented for both the backend collator plugin and the frontend component rendering. To run the tests:
+
+```sh
+yarn test
+yarn test:all # also returns code coverage
+```
+
 ### Linting and code styling
 
 ```sh
